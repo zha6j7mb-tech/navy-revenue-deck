@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'none'"
+    />
+    <title>NAVY_BLUE Revenue Deck</title>
+    <meta name="description" content="副業映像制作の案件・収益・入金を管理するダッシュボード" />
+    <link rel="stylesheet" href="./styles.css?v=20260608" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">NAVY_BLUE REVENUE DECK</p>
+          <h1>副業収益ダッシュボード</h1>
+        </div>
+        <div class="date-panel">
+          <span id="todayLabel"></span>
+          <strong id="yearTotalLabel">¥0</strong>
+          <small id="yearLabel">今年の入金累計</small>
+        </div>
+      </header>
+
+      <section class="summary-grid" aria-label="今月の収益サマリー">
+        <article class="summary-cell primary">
+          <span class="summary-icon">¥</span>
+          <div>
+            <p>今月の入金</p>
+            <strong id="monthIncome">¥0</strong>
+            <small id="monthIncomeSub">確定した売上</small>
+          </div>
+        </article>
+        <article class="summary-cell">
+          <span class="summary-icon">◎</span>
+          <div>
+            <p>目標達成率</p>
+            <strong id="goalRate">0%</strong>
+            <small id="goalSub">目標 ¥0</small>
+          </div>
+        </article>
+        <article class="summary-cell warn">
+          <span class="summary-icon">!</span>
+          <div>
+            <p>未入金</p>
+            <strong id="unpaidAmount">¥0</strong>
+            <small id="unpaidSub">受注済み・未回収</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="goal-bar" aria-label="月間目標の進捗">
+        <div class="goal-bar-head">
+          <span>今月の目標進捗</span>
+          <label class="goal-input">
+            <span>月間目標</span>
+            <input id="goalInput" type="number" min="0" step="10000" inputmode="numeric" />
+          </label>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+          <span class="progress-text" id="progressText">¥0 / ¥0</span>
+        </div>
+      </section>
+
+      <details class="cloud-panel" id="cloudPanel">
+        <summary class="cloud-summary">
+          <div class="cloud-copy">
+            <p class="eyebrow">CLOUD SYNC</p>
+            <h2>Supabase同期</h2>
+            <p id="cloudStatus">未設定: このブラウザ内に保存中</p>
+          </div>
+          <span class="cloud-toggle">設定</span>
+        </summary>
+        <div class="cloud-body">
+          <div class="cloud-fields">
+            <label>
+              <span>Supabase URL</span>
+              <input id="supabaseUrl" type="url" placeholder="https://xxxx.supabase.co" />
+            </label>
+            <label>
+              <span>anon public key</span>
+              <input id="supabaseAnonKey" type="password" placeholder="eyJhbGciOi..." />
+            </label>
+            <label>
+              <span>ログイン用メール</span>
+              <input id="loginEmail" type="text" inputmode="email" autocomplete="email" placeholder="メールアドレス" />
+            </label>
+          </div>
+          <div class="cloud-actions">
+            <button class="quiet-button" type="button" id="saveSupabaseButton">設定を保存</button>
+            <button class="quiet-button" type="button" id="loginButton">ログインリンク送信</button>
+            <button class="quiet-button" type="button" id="syncLocalButton">ローカル分を同期</button>
+            <button class="quiet-button" type="button" id="logoutButton">ログアウト</button>
+          </div>
+        </div>
+      </details>
+
+      <section class="work-layout">
+        <form class="project-form" id="projectForm">
+          <div class="form-head">
+            <h2 id="formTitle">案件を追加</h2>
+            <button class="icon-button" type="button" id="seedButton" title="サンプルを入れる" aria-label="サンプル案件を入れる">＋</button>
+          </div>
+
+          <label>
+            <span>クライアント名</span>
+            <input id="clientName" type="text" placeholder="例：ノバセル / イチカバチカ" required />
+          </label>
+
+          <label>
+            <span>案件種別</span>
+            <select id="projectType"></select>
+          </label>
+
+          <div class="field-row">
+            <label>
+              <span>金額（税抜）</span>
+              <input id="amount" type="number" min="0" step="1000" inputmode="numeric" placeholder="50000" required />
+            </label>
+            <label>
+              <span>ステータス</span>
+              <select id="status"></select>
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              <span>受注日</span>
+              <input id="orderedAt" type="date" />
+            </label>
+            <label>
+              <span>納期</span>
+              <input id="deadline" type="date" />
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              <span>請求日</span>
+              <input id="invoicedAt" type="date" />
+            </label>
+            <label>
+              <span>入金日</span>
+              <input id="paidAt" type="date" />
+            </label>
+          </div>
+
+          <label>
+            <span>メモ</span>
+            <textarea id="memo" rows="3" placeholder="納品形式・尺・連絡事項など"></textarea>
+          </label>
+
+          <div class="form-buttons">
+            <button class="submit-button" type="submit" id="submitButton">案件を追加</button>
+            <button class="quiet-button" type="button" id="cancelEditButton" hidden>編集をやめる</button>
+          </div>
+        </form>
+
+        <section class="board" aria-label="案件一覧">
+          <div class="focus-strip">
+            <div>
+              <p>近づく納期 TOP3</p>
+              <ol class="focus-list" id="focusList">
+                <li>未設定</li>
+              </ol>
+            </div>
+            <div class="board-actions">
+              <button class="quiet-button" type="button" id="csvButton">案件をCSV出力</button>
+              <button class="quiet-button" type="button" id="copyObsidianButton">月次サマリーをコピー</button>
+            </div>
+          </div>
+
+          <section class="chart-card" aria-label="月別入金推移">
+            <div class="section-title">
+              <h2>月別入金推移</h2>
+              <span id="chartYearBadge"></span>
+            </div>
+            <div class="chart-wrap" id="chartWrap"></div>
+          </section>
+
+          <div class="project-section" data-status="active">
+            <div class="section-title">
+              <h2>進行中（商談〜請求）</h2>
+              <span id="activeBadge">0</span>
+            </div>
+            <div class="project-list" id="activeList"></div>
+          </div>
+
+          <div class="project-section" data-status="paid">
+            <div class="section-title">
+              <h2>入金済み</h2>
+              <span id="paidBadge">0</span>
+            </div>
+            <div class="project-list" id="paidList"></div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- 案件カードの雛形 -->
+    <template id="projectTemplate">
+      <article class="project-card">
+        <div class="project-main">
+          <div class="project-topline">
+            <strong class="project-client"></strong>
+            <span class="project-amount"></span>
+          </div>
+          <p class="project-meta"></p>
+          <div class="status-row">
+            <span class="status-chip"></span>
+            <span class="next-action"></span>
+          </div>
+          <p class="project-memo"></p>
+        </div>
+        <div class="project-buttons">
+          <button class="step-button" type="button" title="次のステータスへ進める">次へ ▶</button>
+          <button class="invoice-button" type="button" title="請求書プレビュー">請求書</button>
+          <button class="edit-button" type="button" title="編集">編集</button>
+          <button class="delete-button" type="button" title="削除" aria-label="この案件を削除">×</button>
+        </div>
+      </article>
+    </template>
+
+    <!-- 請求書モーダル -->
+    <div class="invoice-overlay" id="invoiceOverlay" hidden>
+      <div class="invoice-dialog" role="dialog" aria-modal="true" aria-label="請求書プレビュー">
+        <div class="invoice-toolbar no-print">
+          <strong>請求書プレビュー</strong>
+          <div>
+            <button class="quiet-button" type="button" id="printInvoiceButton">印刷 / PDF保存</button>
+            <button class="quiet-button" type="button" id="closeInvoiceButton">閉じる</button>
+          </div>
+        </div>
+        <div class="invoice-sheet" id="invoiceSheet"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"
+      integrity="sha384-S21vdBTi9bjHygfLyIjf4A4QFtW9TvQyHFloa8yT8hIcYgaJT82CZextSZs3a5Wx"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./app.js?v=20260608"></script>
+  </body>
+</html>
