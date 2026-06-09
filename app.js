@@ -77,6 +77,7 @@
     loginEmail: $("loginEmail"),
     setupLink: $("setupLink"),
     applySetupButton: $("applySetupButton"),
+    fetchSetupButton: $("fetchSetupButton"),
     saveSupabaseButton: $("saveSupabaseButton"),
     syncLocalButton: $("syncLocalButton"),
     // form
@@ -1184,6 +1185,7 @@
 
     // Supabase
     if (el.applySetupButton) el.applySetupButton.addEventListener("click", applySetupFromField);
+    if (el.fetchSetupButton) el.fetchSetupButton.addEventListener("click", fetchServerSetup);
     el.saveSupabaseButton.addEventListener("click", saveSupabaseSettings);
     el.syncLocalButton.addEventListener("click", syncLocalToRemote);
   }
@@ -1203,10 +1205,8 @@
     });
   }
 
-  // setupペイロード（base64(JSON{url,key})）を接続情報へ適用する共通処理
-  function applySetupPayload(b64) {
-    const json = decodeURIComponent(escape(atob(b64)));
-    const cfg = JSON.parse(json);
+  // 設定オブジェクト {url,key,email?} を接続情報へ適用する共通処理
+  function applyConfigObject(cfg) {
     if (!cfg || !cfg.url || !cfg.key) return false;
     supaConfig.url = String(cfg.url).trim();
     supaConfig.anonKey = String(cfg.key).trim();
@@ -1216,6 +1216,33 @@
     if (el.supabaseUrl) el.supabaseUrl.value = supaConfig.url;
     if (el.supabaseAnonKey) el.supabaseAnonKey.value = supaConfig.anonKey;
     return true;
+  }
+
+  // setupペイロード（base64(JSON{url,key})）を接続情報へ適用する共通処理
+  function applySetupPayload(b64) {
+    const json = decodeURIComponent(escape(atob(b64)));
+    return applyConfigObject(JSON.parse(json));
+  }
+
+  // サーバーに置かれた設定ファイルから接続情報を取得して同期（コピペ不要）
+  async function fetchServerSetup() {
+    setCloudStatus("サーバーから設定を取得中…");
+    try {
+      const res = await fetch("/nb-setup.json?ts=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("設定ファイルが見つかりません(" + res.status + ")");
+      const cfg = await res.json();
+      if (!applyConfigObject(cfg)) throw new Error("設定ファイルの中身が不正です");
+      showToast("設定を取得しました。同期します…");
+      if (initSupabaseClient()) {
+        await refreshSession();
+      } else {
+        setCloudStatus("接続できません: 取得した設定をご確認ください");
+      }
+    } catch (e) {
+      const detail = (e && e.message) || String(e);
+      setCloudStatus("サーバー設定の取得失敗: " + detail);
+      showToast("サーバー設定の取得失敗: " + detail, 6000);
+    }
   }
 
   // 文字列（リンク全体 / "setup=xxx" / 生のbase64）からsetupコードを取り出す
@@ -1248,7 +1275,8 @@
   function applySetupFromField() {
     const code = extractSetupCode(el.setupLink ? el.setupLink.value : "");
     if (!code) {
-      showToast("設定リンクを貼り付けてください");
+      // 欄が空ならサーバー設定を取得（コピペ不要の復旧用）
+      fetchServerSetup();
       return;
     }
     try {

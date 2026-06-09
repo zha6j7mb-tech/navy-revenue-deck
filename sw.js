@@ -10,7 +10,7 @@
  *   - Supabase API / CDN は必ずネットワーク直通（同期・ライブラリは常に最新）
  * ========================================================================= */
 
-const CACHE_NAME = "navy-revenue-v20260609g";
+const CACHE_NAME = "navy-revenue-v20260609h";
 
 // キャッシュするアセット（アプリの骨格）
 const PRECACHE_ASSETS = [
