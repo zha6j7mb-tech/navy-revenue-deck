@@ -434,6 +434,18 @@ label span,
   padding: 0 16px 16px;
 }
 
+.cloud-setup {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 10px;
+  align-items: end;
+  padding: 12px;
+  border: 1px solid rgba(80, 130, 220, 0.45);
+  border-radius: 12px;
+  background: rgba(80, 130, 220, 0.08);
+}
+
 .cloud-fields {
   display: grid;
   grid-template-columns: 1.1fr 1.1fr 0.9fr;
@@ -1166,7 +1178,8 @@ summary:focus-visible,
   }
 
   .cloud-body,
-  .cloud-fields {
+  .cloud-fields,
+  .cloud-setup {
     grid-template-columns: 1fr;
   }
 

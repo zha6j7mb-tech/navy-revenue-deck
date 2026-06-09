@@ -75,6 +75,8 @@
     supabaseUrl: $("supabaseUrl"),
     supabaseAnonKey: $("supabaseAnonKey"),
     loginEmail: $("loginEmail"),
+    setupLink: $("setupLink"),
+    applySetupButton: $("applySetupButton"),
     saveSupabaseButton: $("saveSupabaseButton"),
     syncLocalButton: $("syncLocalButton"),
     // form
@@ -1181,6 +1183,7 @@
     el.invoiceOverlay.addEventListener("keydown", trapInvoiceFocus);
 
     // Supabase
+    if (el.applySetupButton) el.applySetupButton.addEventListener("click", applySetupFromField);
     el.saveSupabaseButton.addEventListener("click", saveSupabaseSettings);
     el.syncLocalButton.addEventListener("click", syncLocalToRemote);
   }
@@ -1200,21 +1203,37 @@
     });
   }
 
+  // setupペイロード（base64(JSON{url,key})）を接続情報へ適用する共通処理
+  function applySetupPayload(b64) {
+    const json = decodeURIComponent(escape(atob(b64)));
+    const cfg = JSON.parse(json);
+    if (!cfg || !cfg.url || !cfg.key) return false;
+    supaConfig.url = String(cfg.url).trim();
+    supaConfig.anonKey = String(cfg.key).trim();
+    if (cfg.email) supaConfig.email = String(cfg.email).trim();
+    saveSupaConfigLocal();
+    // 入力欄にも反映
+    if (el.supabaseUrl) el.supabaseUrl.value = supaConfig.url;
+    if (el.supabaseAnonKey) el.supabaseAnonKey.value = supaConfig.anonKey;
+    return true;
+  }
+
+  // 文字列（リンク全体 / "setup=xxx" / 生のbase64）からsetupコードを取り出す
+  function extractSetupCode(text) {
+    const s = String(text || "").trim();
+    const m = s.match(/setup=([^&\s]+)/);
+    if (m) return decodeURIComponent(m[1]);
+    // ハッシュやクエリが無ければ全体をコードとみなす
+    return s;
+  }
+
   // ワンタップ設定：URLの #setup=<base64(JSON)> から接続情報を自動適用。
   // ハッシュ部はサーバーに送信されない＆適用後すぐ消すので手入力ミスを防げる。
   function applyHashSetupIfPresent() {
     try {
       const m = (location.hash || "").match(/[#&]setup=([^&]+)/);
       if (!m) return false;
-      const b64 = decodeURIComponent(m[1]);
-      const json = decodeURIComponent(escape(atob(b64)));
-      const cfg = JSON.parse(json);
-      if (cfg && cfg.url && cfg.key) {
-        supaConfig.url = String(cfg.url).trim();
-        supaConfig.anonKey = String(cfg.key).trim();
-        if (cfg.email) supaConfig.email = String(cfg.email).trim();
-        saveSupaConfigLocal();
-        // 履歴・URLからキーを消す
+      if (applySetupPayload(decodeURIComponent(m[1]))) {
         history.replaceState(null, "", location.pathname + location.search);
         showToast("接続情報を自動設定しました");
         return true;
@@ -1223,6 +1242,31 @@
       /* 壊れたリンクは無視 */
     }
     return false;
+  }
+
+  // アプリ内の貼り付け欄からsetupリンク/コードを適用して同期（PWAの保存領域に書き込む）
+  function applySetupFromField() {
+    const code = extractSetupCode(el.setupLink ? el.setupLink.value : "");
+    if (!code) {
+      showToast("設定リンクを貼り付けてください");
+      return;
+    }
+    try {
+      if (!applySetupPayload(code)) {
+        showToast("リンクの形式が正しくありません");
+        return;
+      }
+    } catch (e) {
+      showToast("リンクを読み取れませんでした（コピーし直してください）");
+      return;
+    }
+    if (el.setupLink) el.setupLink.value = "";
+    showToast("設定を適用しました。同期します…");
+    if (initSupabaseClient()) {
+      refreshSession();
+    } else {
+      setCloudStatus("接続できません: URL・キーをご確認ください");
+    }
   }
 
   function init() {

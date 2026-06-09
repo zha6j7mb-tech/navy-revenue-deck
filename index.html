@@ -19,7 +19,7 @@
     <meta name="apple-mobile-web-app-title" content="Revenue Deck" />
     <link rel="apple-touch-icon" href="/icons/icon-180.png" />
 
-    <link rel="stylesheet" href="./styles.css?v=20260609f" />
+    <link rel="stylesheet" href="./styles.css?v=20260609g" />
   </head>
   <body>
     <main class="app-shell">
@@ -86,6 +86,13 @@
           <span class="cloud-toggle">設定</span>
         </summary>
         <div class="cloud-body">
+          <div class="cloud-setup">
+            <label>
+              <span>かんたん設定（設定リンクを貼り付け）</span>
+              <input id="setupLink" type="text" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://…#setup=… を貼り付け" />
+            </label>
+            <button class="quiet-button" type="button" id="applySetupButton">リンクから設定して同期</button>
+          </div>
           <div class="cloud-fields">
             <label>
               <span>Supabase URL</span>
@@ -254,6 +261,6 @@
       integrity="sha384-S21vdBTi9bjHygfLyIjf4A4QFtW9TvQyHFloa8yT8hIcYgaJT82CZextSZs3a5Wx"
       crossorigin="anonymous"
     ></script>
-    <script src="./app.js?v=20260609f"></script>
+    <script src="./app.js?v=20260609g"></script>
   </body>
 </html>
