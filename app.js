@@ -76,12 +76,7 @@
     supabaseAnonKey: $("supabaseAnonKey"),
     loginEmail: $("loginEmail"),
     saveSupabaseButton: $("saveSupabaseButton"),
-    loginButton: $("loginButton"),
     syncLocalButton: $("syncLocalButton"),
-    logoutButton: $("logoutButton"),
-    otpSection: $("otpSection"),
-    otpCode: $("otpCode"),
-    verifyOtpButton: $("verifyOtpButton"),
     // form
     projectForm: $("projectForm"),
     formTitle: $("formTitle"),
@@ -945,8 +940,9 @@
     });
   }
 
+  // anon key で接続できれば同期ON（個人アプリなのでログイン不要）
   function cloudEnabled() {
-    return !!(supabaseClient && currentUser);
+    return !!supabaseClient;
   }
 
   function initSupabaseClient() {
@@ -970,16 +966,11 @@
   async function refreshSession() {
     if (!supabaseClient) return;
     try {
-      const { data } = await supabaseClient.auth.getSession();
-      currentUser = data?.session?.user || null;
-      if (currentUser) {
-        setCloudStatus(`ログイン中: ${currentUser.email || ""}（クラウド同期ON）`);
-        await pullRemote();
-      } else {
-        setCloudStatus("Supabase設定済み: ログインするとクラウド同期します");
-      }
+      // ログイン不要：anon key で接続できれば即同期
+      setCloudStatus("Supabase接続済み（クラウド同期ON）");
+      await pullRemote();
     } catch {
-      setCloudStatus("セッション確認に失敗しました");
+      setCloudStatus("接続に失敗しました。URL・キーを確認してください");
     }
   }
 
@@ -1134,18 +1125,8 @@
     if (supaConfig.url && supaConfig.anonKey) {
       if (initSupabaseClient()) {
         refreshSession();
-        // 認証状態の変化を監視（マジックリンク帰還時など）
-        supabaseClient.auth.onAuthStateChange((_event, session) => {
-          currentUser = session?.user || null;
-          if (currentUser) {
-            setCloudStatus(`ログイン中: ${currentUser.email || ""}（クラウド同期ON）`);
-            pullRemote();
-          } else {
-            setCloudStatus("Supabase設定済み: ログインするとクラウド同期します");
-          }
-        });
       } else {
-        setCloudStatus("Supabase設定済み（接続待ち）");
+        setCloudStatus("接続失敗: URL・キーを確認してください");
       }
     } else {
       setCloudStatus("未設定: このブラウザ内に保存中");
@@ -1196,12 +1177,7 @@
 
     // Supabase
     el.saveSupabaseButton.addEventListener("click", saveSupabaseSettings);
-    el.loginButton.addEventListener("click", sendLoginLink);
-    el.verifyOtpButton.addEventListener("click", verifyOtpCode);
-    // Enterキーでもコード送信できるように
-    el.otpCode.addEventListener("keydown", (e) => { if (e.key === "Enter") verifyOtpCode(); });
     el.syncLocalButton.addEventListener("click", syncLocalToRemote);
-    el.logoutButton.addEventListener("click", logout);
   }
 
   /* ---------------------------------------------------------------------
