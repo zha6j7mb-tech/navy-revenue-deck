@@ -23,6 +23,186 @@
   --shadow-soft: 0 16px 38px rgba(20, 42, 69, 0.12);
   --shadow-float: 0 22px 58px rgba(18, 38, 64, 0.18);
   --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.84);
+
+  /* ===== テーマ切替用サーフェス（既定＝ライト） ===== */
+  --amount-color: var(--navy);
+  --decor-opacity: 0.62;
+  --card-decor-opacity: 1;
+  --app-bg:
+    linear-gradient(145deg, rgba(188, 214, 240, 0.55) 0%, transparent 30%),
+    linear-gradient(225deg, rgba(63, 124, 196, 0.18) 0%, transparent 40%),
+    linear-gradient(180deg, #eef3f9 0%, #dde7f3 56%, #ccd9ea 100%);
+  --topbar-bg:
+    linear-gradient(100deg, rgba(27, 58, 91, 0.97) 0%, rgba(31, 67, 104, 0.92) 56%, rgba(63, 124, 196, 0.86) 100%);
+  --glass-border: rgba(255, 255, 255, 0.72);
+  --subpanel-bg: rgba(255, 255, 255, 0.46);
+  --card-bg: rgba(255, 255, 255, 0.82);
+  --input-bg: rgba(255, 255, 255, 0.7);
+  --input-border: rgba(40, 64, 92, 0.2);
+  --btn-quiet-bg: rgba(255, 255, 255, 0.62);
+  --btn-quiet-border: rgba(255, 255, 255, 0.68);
+  --chip-neutral-bg: rgba(255, 255, 255, 0.62);
+  --track-bg: rgba(40, 64, 92, 0.1);
+  --focus-strip-bg:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.76), rgba(236, 243, 251, 0.7)),
+    rgba(255, 255, 255, 0.48);
+  --cloud-bg:
+    linear-gradient(95deg, rgba(236, 243, 251, 0.78), rgba(255, 255, 255, 0.82) 54%, rgba(214, 230, 246, 0.62)),
+    rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================================================
+ * テーマ② Dark Analytics（画像再現・濃紺アナリティクス）
+ * ========================================================================= */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e8eefc;
+  --soft-ink: #aab6cf;
+  --muted: #8290ab;
+  --blue: #5b9bf5;
+  --blue-soft: #7fb0f7;
+  --sky: #9fc4ff;
+  --paper: #131a2c;
+  --panel: rgba(22, 30, 51, 0.72);
+  --panel-cool: rgba(20, 27, 46, 0.7);
+  --line: rgba(150, 175, 220, 0.14);
+  --line-strong: rgba(150, 175, 220, 0.26);
+  --teal: #34d3c0;
+  --cyan: #45c0e0;
+  --amber: #f0b760;
+  --coral: #f08a7e;
+  --coral-deep: #ff9b8e;
+  --violet: #a99bf0;
+  --shadow-soft: 0 16px 38px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 22px 58px rgba(0, 0, 0, 0.55);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --amount-color: #cfe0ff;
+  --decor-opacity: 0;
+  --card-decor-opacity: 0;
+  --app-bg:
+    radial-gradient(1200px 600px at 80% -10%, rgba(59, 130, 246, 0.18), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(52, 211, 192, 0.1), transparent 55%),
+    linear-gradient(180deg, #0a0e1a 0%, #0b1020 60%, #0a0e18 100%);
+  --topbar-bg:
+    linear-gradient(105deg, rgba(20, 30, 58, 0.96) 0%, rgba(28, 48, 96, 0.92) 52%, rgba(45, 98, 170, 0.85) 100%);
+  --glass-border: rgba(120, 160, 230, 0.18);
+  --subpanel-bg: rgba(20, 28, 48, 0.55);
+  --card-bg: rgba(22, 30, 51, 0.66);
+  --input-bg: rgba(13, 19, 34, 0.7);
+  --input-border: rgba(120, 160, 230, 0.22);
+  --btn-quiet-bg: rgba(40, 52, 82, 0.6);
+  --btn-quiet-border: rgba(120, 160, 230, 0.22);
+  --chip-neutral-bg: rgba(60, 76, 112, 0.5);
+  --track-bg: rgba(150, 175, 220, 0.12);
+  --focus-strip-bg:
+    linear-gradient(110deg, rgba(28, 40, 72, 0.7), rgba(18, 26, 46, 0.6)),
+    rgba(18, 26, 46, 0.5);
+  --cloud-bg:
+    linear-gradient(95deg, rgba(24, 34, 60, 0.8), rgba(18, 26, 46, 0.82) 54%, rgba(30, 44, 78, 0.7)),
+    rgba(16, 22, 40, 0.6);
+}
+
+/* =========================================================================
+ * テーマ③ Warm Sand（明るいウォーム系・エディトリアル）
+ * ========================================================================= */
+:root[data-theme="warm"] {
+  --ink: #3b2f28;
+  --soft-ink: #6b5a4d;
+  --muted: #8a7666;
+  --navy: #9c4221;
+  --navy-deep: #7a3318;
+  --blue: #c2703d;
+  --blue-soft: #d98c54;
+  --sky: #f0d9c2;
+  --paper: #f7efe6;
+  --panel: rgba(255, 250, 243, 0.86);
+  --panel-cool: rgba(248, 238, 226, 0.8);
+  --line: rgba(120, 80, 50, 0.16);
+  --line-strong: rgba(120, 80, 50, 0.28);
+  --teal: #5a9e7a;
+  --cyan: #3f8f86;
+  --amber: #d99a3f;
+  --coral: #d96b54;
+  --coral-deep: #b5482f;
+  --violet: #a07bb0;
+  --shadow-soft: 0 16px 38px rgba(90, 60, 35, 0.14);
+  --shadow-float: 0 22px 58px rgba(90, 60, 35, 0.2);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --amount-color: var(--navy);
+  --decor-opacity: 0.5;
+  --card-decor-opacity: 1;
+  --app-bg:
+    linear-gradient(145deg, rgba(240, 217, 194, 0.5) 0%, transparent 30%),
+    linear-gradient(225deg, rgba(194, 112, 61, 0.12) 0%, transparent 40%),
+    linear-gradient(180deg, #faf3ea 0%, #f3e6d6 56%, #ecdcc8 100%);
+  --topbar-bg:
+    linear-gradient(100deg, rgba(124, 51, 24, 0.96) 0%, rgba(156, 66, 33, 0.92) 54%, rgba(194, 112, 61, 0.86) 100%);
+  --glass-border: rgba(255, 250, 243, 0.7);
+  --subpanel-bg: rgba(255, 250, 243, 0.5);
+  --card-bg: rgba(255, 251, 245, 0.85);
+  --input-bg: rgba(255, 252, 247, 0.75);
+  --input-border: rgba(120, 80, 50, 0.2);
+  --btn-quiet-bg: rgba(255, 250, 243, 0.66);
+  --btn-quiet-border: rgba(255, 244, 232, 0.7);
+  --chip-neutral-bg: rgba(255, 248, 238, 0.7);
+  --track-bg: rgba(120, 80, 50, 0.1);
+  --focus-strip-bg:
+    linear-gradient(110deg, rgba(255, 250, 243, 0.78), rgba(248, 236, 222, 0.7)),
+    rgba(255, 250, 243, 0.5);
+  --cloud-bg:
+    linear-gradient(95deg, rgba(248, 238, 226, 0.8), rgba(255, 250, 243, 0.84) 54%, rgba(240, 224, 205, 0.64)),
+    rgba(255, 250, 243, 0.5);
+}
+
+/* =========================================================================
+ * テーマ④ Midnight Emerald（濃緑×ゴールドのダーク）
+ * ========================================================================= */
+:root[data-theme="emerald"] {
+  color-scheme: dark;
+  --ink: #e7f3ec;
+  --soft-ink: #a7c2b4;
+  --muted: #7f9b8d;
+  --blue: #34d399;
+  --blue-soft: #5fe0b0;
+  --sky: #9fe8c8;
+  --paper: #0c1a14;
+  --panel: rgba(16, 32, 26, 0.72);
+  --panel-cool: rgba(14, 28, 22, 0.7);
+  --line: rgba(140, 210, 180, 0.14);
+  --line-strong: rgba(140, 210, 180, 0.26);
+  --teal: #2dd4bf;
+  --cyan: #4cc9b0;
+  --amber: #e9c46a;
+  --coral: #ef8a6b;
+  --coral-deep: #ff9b7a;
+  --violet: #9db8a8;
+  --shadow-soft: 0 16px 38px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 22px 58px rgba(0, 0, 0, 0.55);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --amount-color: #b9f0d4;
+  --decor-opacity: 0;
+  --card-decor-opacity: 0;
+  --app-bg:
+    radial-gradient(1100px 560px at 82% -10%, rgba(52, 211, 153, 0.16), transparent 60%),
+    radial-gradient(800px 460px at -8% 18%, rgba(233, 196, 106, 0.08), transparent 55%),
+    linear-gradient(180deg, #07140e 0%, #08160f 60%, #06120d 100%);
+  --topbar-bg:
+    linear-gradient(105deg, rgba(8, 28, 20, 0.96) 0%, rgba(12, 52, 38, 0.92) 52%, rgba(20, 110, 80, 0.82) 100%);
+  --glass-border: rgba(120, 210, 175, 0.18);
+  --subpanel-bg: rgba(14, 30, 24, 0.55);
+  --card-bg: rgba(16, 32, 26, 0.66);
+  --input-bg: rgba(8, 18, 14, 0.7);
+  --input-border: rgba(120, 210, 175, 0.22);
+  --btn-quiet-bg: rgba(28, 52, 42, 0.6);
+  --btn-quiet-border: rgba(120, 210, 175, 0.22);
+  --chip-neutral-bg: rgba(40, 70, 58, 0.5);
+  --track-bg: rgba(140, 210, 180, 0.12);
+  --focus-strip-bg:
+    linear-gradient(110deg, rgba(20, 40, 32, 0.7), rgba(10, 22, 17, 0.6)),
+    rgba(10, 22, 17, 0.5);
+  --cloud-bg:
+    linear-gradient(95deg, rgba(16, 38, 28, 0.8), rgba(10, 22, 17, 0.82) 54%, rgba(22, 52, 40, 0.7)),
+    rgba(8, 18, 14, 0.6);
 }
 
 * {
@@ -32,10 +212,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    linear-gradient(145deg, rgba(188, 214, 240, 0.55) 0%, transparent 30%),
-    linear-gradient(225deg, rgba(63, 124, 196, 0.18) 0%, transparent 40%),
-    linear-gradient(180deg, #eef3f9 0%, #dde7f3 56%, #ccd9ea 100%);
+  background: var(--app-bg);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
 }
@@ -48,7 +226,7 @@ body::before {
   background:
     linear-gradient(115deg, transparent 0 12%, rgba(255, 255, 255, 0.3) 12% 13%, transparent 13% 100%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.22), transparent 35%, rgba(63, 124, 196, 0.14));
-  opacity: 0.6;
+  opacity: var(--decor-opacity);
 }
 
 body::after {
@@ -62,7 +240,7 @@ body::after {
   background: linear-gradient(120deg, rgba(27, 58, 91, 0.32), rgba(63, 124, 196, 0.12));
   border-radius: 55% 45% 0 0;
   transform: rotate(-3deg);
-  opacity: 0.65;
+  opacity: var(--decor-opacity);
 }
 
 button,
@@ -93,10 +271,9 @@ button {
   min-height: 174px;
   padding: 30px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
-  background:
-    linear-gradient(100deg, rgba(27, 58, 91, 0.97) 0%, rgba(31, 67, 104, 0.92) 56%, rgba(63, 124, 196, 0.86) 100%);
+  background: var(--topbar-bg);
   box-shadow: var(--shadow-float), var(--inner-light);
 }
 
@@ -206,7 +383,7 @@ h2 {
   padding: 18px;
   overflow: hidden;
   background: var(--panel);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   box-shadow: 14px 20px 46px rgba(20, 42, 69, 0.12), var(--inner-light);
   backdrop-filter: blur(18px);
@@ -220,6 +397,7 @@ h2 {
   background: linear-gradient(120deg, rgba(63, 124, 196, 0.2), rgba(255, 255, 255, 0.08));
   border-radius: 50% 50% 0 0;
   transform: rotate(-6deg);
+  opacity: var(--card-decor-opacity);
 }
 
 .summary-cell.primary::after {
@@ -288,7 +466,7 @@ label span,
   gap: 10px;
   margin: 0 0 18px;
   padding: 16px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   background: var(--panel);
   box-shadow: var(--shadow-soft), var(--inner-light);
@@ -329,7 +507,7 @@ label span,
   position: relative;
   height: 30px;
   border-radius: 999px;
-  background: rgba(40, 64, 92, 0.1);
+  background: var(--track-bg);
   overflow: hidden;
   box-shadow: inset 0 2px 6px rgba(20, 42, 69, 0.12);
 }
@@ -362,11 +540,9 @@ label span,
   display: block;
   margin: 0 0 18px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
-  background:
-    linear-gradient(95deg, rgba(236, 243, 251, 0.78), rgba(255, 255, 255, 0.82) 54%, rgba(214, 230, 246, 0.62)),
-    rgba(255, 255, 255, 0.5);
+  background: var(--cloud-bg);
   box-shadow: var(--shadow-soft), var(--inner-light);
   backdrop-filter: blur(18px);
 }
@@ -408,9 +584,9 @@ label span,
   flex: 0 0 auto;
   min-width: 76px;
   padding: 9px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--btn-quiet-bg);
   color: var(--blue);
   font-size: 12px;
   font-weight: 900;
@@ -467,7 +643,7 @@ label span,
 
 .project-form,
 .board {
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   background: var(--panel);
   box-shadow: var(--shadow-soft), var(--inner-light);
@@ -511,16 +687,12 @@ input,
 select,
 textarea {
   width: 100%;
-  border: 1px solid rgba(40, 64, 92, 0.2);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--input-bg);
   color: var(--ink);
   padding: 12px 13px;
-  box-shadow: inset 4px 5px 12px rgba(20, 42, 69, 0.05), inset -4px -5px 12px rgba(255, 255, 255, 0.72);
-}
-
-select {
-  color-scheme: light;
+  box-shadow: inset 4px 5px 12px rgba(20, 42, 69, 0.05), var(--inner-light);
 }
 
 textarea {
@@ -575,10 +747,10 @@ summary:focus-visible,
 .quiet-button {
   min-height: 38px;
   padding: 0 13px;
-  border: 1px solid rgba(255, 255, 255, 0.68);
-  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--btn-quiet-border);
+  background: var(--btn-quiet-bg);
   color: var(--ink);
-  box-shadow: 6px 8px 18px rgba(20, 42, 69, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  box-shadow: 6px 8px 18px rgba(20, 42, 69, 0.08), var(--inner-light);
 }
 
 .cloud-actions .quiet-button {
@@ -615,6 +787,7 @@ summary:focus-visible,
   background: linear-gradient(115deg, rgba(63, 124, 196, 0.22), rgba(255, 255, 255, 0.04));
   border-radius: 50% 50% 0 0;
   transform: rotate(-3deg);
+  opacity: var(--card-decor-opacity);
 }
 
 .board > * {
@@ -625,11 +798,9 @@ summary:focus-visible,
 .focus-strip {
   min-height: 86px;
   padding: 16px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
-  background:
-    linear-gradient(110deg, rgba(255, 255, 255, 0.76), rgba(236, 243, 251, 0.7)),
-    rgba(255, 255, 255, 0.48);
+  background: var(--focus-strip-bg);
   box-shadow: 10px 12px 26px rgba(20, 42, 69, 0.1), var(--inner-light);
 }
 
@@ -675,10 +846,10 @@ summary:focus-visible,
   display: grid;
   gap: 12px;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.46);
-  box-shadow: 8px 10px 24px rgba(20, 42, 69, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  background: var(--subpanel-bg);
+  box-shadow: 8px 10px 24px rgba(20, 42, 69, 0.08), var(--inner-light);
 }
 
 .chart-wrap {
@@ -744,10 +915,10 @@ summary:focus-visible,
   display: grid;
   gap: 10px;
   padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.4);
-  box-shadow: 8px 10px 24px rgba(20, 42, 69, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  background: var(--subpanel-bg);
+  box-shadow: 8px 10px 24px rgba(20, 42, 69, 0.08), var(--inner-light);
 }
 
 .section-title {
@@ -779,11 +950,11 @@ summary:focus-visible,
   place-items: center;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.62);
+  background: var(--chip-neutral-bg);
   color: var(--soft-ink);
   font-weight: 900;
   font-size: 13px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84);
+  box-shadow: var(--inner-light);
 }
 
 .project-list {
@@ -800,11 +971,11 @@ summary:focus-visible,
   align-items: start;
   padding: 14px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--glass-border);
   border-left: 5px solid var(--blue);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 6px 8px 20px rgba(20, 42, 69, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.76);
+  background: var(--card-bg);
+  box-shadow: 6px 8px 20px rgba(20, 42, 69, 0.08), var(--inner-light);
 }
 
 .project-card[data-state="lead"] { border-left-color: var(--violet); }
@@ -835,7 +1006,7 @@ summary:focus-visible,
 
 .project-amount {
   flex: 0 0 auto;
-  color: var(--navy);
+  color: var(--amount-color);
   font-size: 16px;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
@@ -896,14 +1067,14 @@ summary:focus-visible,
 .project-buttons button {
   min-height: 34px;
   padding: 0 10px;
-  border: 1px solid rgba(40, 64, 92, 0.14);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--input-bg);
   color: var(--soft-ink);
   font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: var(--inner-light);
 }
 
 .project-buttons .step-button {
@@ -1000,6 +1171,12 @@ summary:focus-visible,
 }
 
 .invoice-sheet {
+  /* 請求書は印刷物。テーマに関わらず常にライト配色へ固定 */
+  --ink: #1f2b3a;
+  --soft-ink: #4a5a6e;
+  --navy: #1b3a5b;
+  --paper: #eef3f9;
+  --line: rgba(40, 64, 92, 0.14);
   padding: 40px;
   color: #1f2b3a;
 }
@@ -1126,7 +1303,52 @@ summary:focus-visible,
   line-height: 1.7;
 }
 
+/* ===== テーマ切替ボタン（トップバー右上） ===== */
+.theme-switch {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 16px rgba(10, 26, 46, 0.22);
+}
+
+.theme-switch:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+/* ダーク系テーマで遅延案件カードの背景が浮かないよう調整 */
+:root[data-theme="dark"] .project-card.overdue {
+  background: rgba(70, 32, 30, 0.5);
+}
+
+:root[data-theme="emerald"] .project-card.overdue {
+  background: rgba(60, 36, 24, 0.5);
+}
+
 @media (hover: hover) {
+  .theme-switch:hover {
+    background: rgba(255, 255, 255, 0.26);
+    transform: translateY(-1px);
+  }
+
+  .theme-switch {
+    transition: background 180ms ease, transform 180ms ease;
+  }
+
   .submit-button:hover,
   .quiet-button:hover,
   .icon-button:hover,

@@ -19,11 +19,14 @@
     <meta name="apple-mobile-web-app-title" content="Revenue Deck" />
     <link rel="apple-touch-icon" href="/icons/icon-180.png" />
 
-    <link rel="stylesheet" href="./styles.css?v=20260609i" />
+    <!-- 初回ペイント前にテーマ適用（フラッシュ防止） -->
+    <script src="./theme-boot.js?v=20260609j"></script>
+    <link rel="stylesheet" href="./styles.css?v=20260609j" />
   </head>
   <body>
     <main class="app-shell">
       <header class="topbar">
+        <button class="theme-switch" type="button" id="themeSwitch" aria-label="表示テーマを切り替え">🎨 ライト</button>
         <div>
           <p class="eyebrow">NAVY_BLUE REVENUE DECK</p>
           <h1>副業収益ダッシュボード</h1>
@@ -261,6 +264,6 @@
       integrity="sha384-S21vdBTi9bjHygfLyIjf4A4QFtW9TvQyHFloa8yT8hIcYgaJT82CZextSZs3a5Wx"
       crossorigin="anonymous"
     ></script>
-    <script src="./app.js?v=20260609i"></script>
+    <script src="./app.js?v=20260609j"></script>
   </body>
 </html>

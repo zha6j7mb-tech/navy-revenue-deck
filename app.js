@@ -17,6 +17,15 @@
   const STORAGE_KEY = "navyRevenueDeck.projects.v1";
   const GOAL_KEY = "navyRevenueDeck.monthlyGoal.v1";
   const SUPA_CONFIG_KEY = "navyRevenueDeck.supabaseConfig.v1";
+  const THEME_KEY = "navyRevenueDeck.theme.v1";
+
+  // 表示テーマ（ボタンで循環切替）
+  const THEMES = [
+    { id: "light", label: "ライト", icon: "🎨" },
+    { id: "dark", label: "Dark Analytics", icon: "🌌" },
+    { id: "warm", label: "ウォームサンド", icon: "🏜️" },
+    { id: "emerald", label: "ミッドナイト", icon: "🌿" },
+  ];
   const TAX_RATE = 0.1;
   const DEFAULT_GOAL = 300000; // 副業の月間目標（既定 ¥300,000）
 
@@ -104,6 +113,8 @@
     activeBadge: $("activeBadge"),
     paidList: $("paidList"),
     paidBadge: $("paidBadge"),
+    // theme
+    themeSwitch: $("themeSwitch"),
     // misc
     toast: $("toast"),
     projectTemplate: $("projectTemplate"),
@@ -1191,6 +1202,44 @@
   /* ---------------------------------------------------------------------
    * 起動
    * ------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * 表示テーマ
+   * ------------------------------------------------------------------- */
+  function applyTheme(id) {
+    const theme = THEMES.find((t) => t.id === id) || THEMES[0];
+    // light は既定（data-theme なし）でもよいが、明示しておく
+    document.documentElement.setAttribute("data-theme", theme.id);
+    if (el.themeSwitch) {
+      el.themeSwitch.textContent = `${theme.icon} ${theme.label}`;
+      el.themeSwitch.setAttribute("title", `テーマ：${theme.label}（タップで切替）`);
+    }
+    try {
+      localStorage.setItem(THEME_KEY, theme.id);
+    } catch {
+      /* noop */
+    }
+    return theme;
+  }
+
+  function cycleTheme() {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    const idx = THEMES.findIndex((t) => t.id === current);
+    const next = THEMES[(idx + 1) % THEMES.length];
+    const applied = applyTheme(next.id);
+    showToast(`テーマ：${applied.label}`);
+  }
+
+  function initTheme() {
+    let saved = "light";
+    try {
+      saved = localStorage.getItem(THEME_KEY) || "light";
+    } catch {
+      /* noop */
+    }
+    applyTheme(saved);
+    if (el.themeSwitch) el.themeSwitch.addEventListener("click", cycleTheme);
+  }
+
   // PWA: Service Worker 登録
   function registerSW() {
     if (!("serviceWorker" in navigator)) return;
@@ -1274,6 +1323,7 @@
   }
 
   function init() {
+    initTheme();
     populateSelects();
     loadLocal();
     applyHashSetupIfPresent();
