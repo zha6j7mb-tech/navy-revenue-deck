@@ -19,7 +19,7 @@
     <meta name="apple-mobile-web-app-title" content="Revenue Deck" />
     <link rel="apple-touch-icon" href="/icons/icon-180.png" />
 
-    <link rel="stylesheet" href="./styles.css?v=20260609" />
+    <link rel="stylesheet" href="./styles.css?v=20260609b" />
   </head>
   <body>
     <main class="app-shell">
@@ -102,9 +102,21 @@
           </div>
           <div class="cloud-actions">
             <button class="quiet-button" type="button" id="saveSupabaseButton">設定を保存</button>
-            <button class="quiet-button" type="button" id="loginButton">ログインリンク送信</button>
+            <button class="quiet-button" type="button" id="loginButton">確認コードを送信</button>
             <button class="quiet-button" type="button" id="syncLocalButton">ローカル分を同期</button>
             <button class="quiet-button" type="button" id="logoutButton">ログアウト</button>
+          </div>
+          <!-- OTP コード入力（送信後に表示） -->
+          <div id="otpSection" hidden style="margin-top:12px">
+            <label style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:0.8rem;color:var(--text-sub,#888)">メールに届いた確認コード（6桁）を入力</span>
+              <input id="otpCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456"
+                     autocomplete="one-time-code"
+                     style="letter-spacing:0.3em;font-size:1.2rem;text-align:center;padding:8px;border:1px solid #ccc;border-radius:6px;width:100%;box-sizing:border-box" />
+            </label>
+            <button class="quiet-button" type="button" id="verifyOtpButton" style="margin-top:6px;width:100%">
+              コードでログイン
+            </button>
           </div>
         </div>
       </details>
@@ -256,6 +268,6 @@
       integrity="sha384-S21vdBTi9bjHygfLyIjf4A4QFtW9TvQyHFloa8yT8hIcYgaJT82CZextSZs3a5Wx"
       crossorigin="anonymous"
     ></script>
-    <script src="./app.js?v=20260609"></script>
+    <script src="./app.js?v=20260609b"></script>
   </body>
 </html>

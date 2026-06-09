@@ -79,6 +79,9 @@
     loginButton: $("loginButton"),
     syncLocalButton: $("syncLocalButton"),
     logoutButton: $("logoutButton"),
+    otpSection: $("otpSection"),
+    otpCode: $("otpCode"),
+    verifyOtpButton: $("verifyOtpButton"),
     // form
     projectForm: $("projectForm"),
     formTitle: $("formTitle"),
@@ -1067,14 +1070,48 @@
     try {
       const { error } = await supabaseClient.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: window.location.href },
+        options: { shouldCreateUser: false },
       });
       if (error) throw error;
       supaConfig.email = email;
       saveSupaConfigLocal();
-      showToast("ログインリンクを送信しました。メールを確認してください");
+      // OTP入力欄を表示
+      el.otpSection.hidden = false;
+      el.otpCode.value = "";
+      el.otpCode.focus();
+      showToast("確認コードをメールに送信しました。6桁のコードを入力してください");
     } catch {
-      showToast("ログインリンクの送信に失敗しました");
+      showToast("送信に失敗しました。Supabase設定を確認してください");
+    }
+  }
+
+  async function verifyOtpCode() {
+    const email = (el.loginEmail.value || supaConfig.email || "").trim();
+    const token = (el.otpCode.value || "").trim();
+    if (!email) {
+      showToast("ログイン用メールを入力してください");
+      return;
+    }
+    if (token.length < 6) {
+      showToast("6桁のコードを入力してください");
+      el.otpCode.focus();
+      return;
+    }
+    try {
+      const { data, error } = await supabaseClient.auth.verifyOtp({
+        email,
+        token,
+        type: "email",
+      });
+      if (error) throw error;
+      currentUser = data.user;
+      el.otpSection.hidden = true;
+      el.otpCode.value = "";
+      setCloudStatus(`ログイン中: ${currentUser.email || ""}（クラウド同期ON）`);
+      showToast("ログインしました！データを取得中…");
+      await pullRemote();
+    } catch {
+      showToast("コードが正しくないか期限切れです。再度送信してください");
     }
   }
 
@@ -1160,6 +1197,9 @@
     // Supabase
     el.saveSupabaseButton.addEventListener("click", saveSupabaseSettings);
     el.loginButton.addEventListener("click", sendLoginLink);
+    el.verifyOtpButton.addEventListener("click", verifyOtpCode);
+    // Enterキーでもコード送信できるように
+    el.otpCode.addEventListener("keydown", (e) => { if (e.key === "Enter") verifyOtpCode(); });
     el.syncLocalButton.addEventListener("click", syncLocalToRemote);
     el.logoutButton.addEventListener("click", logout);
   }
