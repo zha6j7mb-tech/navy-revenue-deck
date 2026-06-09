@@ -1,9 +1,16 @@
 /* =========================================================================
  * NAVY_BLUE Revenue Deck — Service Worker
  * PWA オフライン対応・アセットキャッシュ
+ *
+ * 方針:
+ *   - HTML（ナビゲーション）は「ネットワーク優先」→ 新しいデプロイを必ず拾う
+ *     （オフライン時のみキャッシュにフォールバック）
+ *   - JS / CSS / アイコン等のアセットは「stale-while-revalidate」
+ *     （キャッシュを即返しつつ裏で最新を取得して次回に備える）
+ *   - Supabase API / CDN は必ずネットワーク直通（同期・ライブラリは常に最新）
  * ========================================================================= */
 
-const CACHE_NAME = "navy-revenue-v20260609";
+const CACHE_NAME = "navy-revenue-v20260609d";
 
 // キャッシュするアセット（アプリの骨格）
 const PRECACHE_ASSETS = [
@@ -29,45 +36,62 @@ self.addEventListener("install", (event) => {
 // ─── アクティベート：古いキャッシュを削除 ────────────────────────────────
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((k) => k !== CACHE_NAME)
-          .map((k) => caches.delete(k))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
       )
-    )
+      .then(() => self.clients.claim())
   );
-  // すべてのクライアントを即座にこの SW で制御
-  self.clients.claim();
 });
 
-// ─── フェッチ：キャッシュ優先 / Supabase はネットワーク直通 ─────────────
+// ─── フェッチ ─────────────────────────────────────────────────────────────
 self.addEventListener("fetch", (event) => {
-  const url = event.request.url;
+  const req = event.request;
+  const url = req.url;
+
+  // GET 以外は素通り
+  if (req.method !== "GET") return;
 
   // Supabase API / CDN は必ずネットワークへ（オフライン時はそのままエラー）
-  if (
-    url.includes("supabase.co") ||
-    url.includes("cdn.jsdelivr.net")
-  ) {
+  if (url.includes("supabase.co") || url.includes("cdn.jsdelivr.net")) {
     return; // SW を素通り → ブラウザのデフォルト挙動
   }
 
-  // それ以外：キャッシュ優先、なければネットワーク取得してキャッシュ
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        // エラーレスポンスはキャッシュしない
-        if (!response || response.status !== 200 || response.type === "error") {
+  // HTML（ページ遷移）は「ネットワーク優先」→ 最新デプロイを必ず取得
+  const isNavigation =
+    req.mode === "navigate" ||
+    (req.headers.get("accept") || "").includes("text/html");
+
+  if (isNavigation) {
+    event.respondWith(
+      fetch(req)
+        .then((response) => {
+          const cloned = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put("/index.html", cloned));
           return response;
-        }
-        const cloned = response.clone();
-        caches.open(CACHE_NAME).then((cache) =>
-          cache.put(event.request, cloned)
-        );
-        return response;
-      });
+        })
+        .catch(() =>
+          caches.match(req).then((cached) => cached || caches.match("/index.html"))
+        )
+    );
+    return;
+  }
+
+  // それ以外のアセット：stale-while-revalidate
+  event.respondWith(
+    caches.match(req).then((cached) => {
+      const network = fetch(req)
+        .then((response) => {
+          if (response && response.status === 200 && response.type !== "error") {
+            const cloned = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, cloned));
+          }
+          return response;
+        })
+        .catch(() => cached);
+      // キャッシュがあれば即返し、裏で更新。なければネットワークを待つ。
+      return cached || network;
     })
   );
 });
