@@ -1200,9 +1200,35 @@
     });
   }
 
+  // ワンタップ設定：URLの #setup=<base64(JSON)> から接続情報を自動適用。
+  // ハッシュ部はサーバーに送信されない＆適用後すぐ消すので手入力ミスを防げる。
+  function applyHashSetupIfPresent() {
+    try {
+      const m = (location.hash || "").match(/[#&]setup=([^&]+)/);
+      if (!m) return false;
+      const b64 = decodeURIComponent(m[1]);
+      const json = decodeURIComponent(escape(atob(b64)));
+      const cfg = JSON.parse(json);
+      if (cfg && cfg.url && cfg.key) {
+        supaConfig.url = String(cfg.url).trim();
+        supaConfig.anonKey = String(cfg.key).trim();
+        if (cfg.email) supaConfig.email = String(cfg.email).trim();
+        saveSupaConfigLocal();
+        // 履歴・URLからキーを消す
+        history.replaceState(null, "", location.pathname + location.search);
+        showToast("接続情報を自動設定しました");
+        return true;
+      }
+    } catch (e) {
+      /* 壊れたリンクは無視 */
+    }
+    return false;
+  }
+
   function init() {
     populateSelects();
     loadLocal();
+    applyHashSetupIfPresent();
     resetForm();
     bindEvents();
     restoreCloudUI();
