@@ -77,7 +77,6 @@
     loginEmail: $("loginEmail"),
     setupLink: $("setupLink"),
     applySetupButton: $("applySetupButton"),
-    fetchSetupButton: $("fetchSetupButton"),
     saveSupabaseButton: $("saveSupabaseButton"),
     syncLocalButton: $("syncLocalButton"),
     // form
@@ -1185,7 +1184,6 @@
 
     // Supabase
     if (el.applySetupButton) el.applySetupButton.addEventListener("click", applySetupFromField);
-    if (el.fetchSetupButton) el.fetchSetupButton.addEventListener("click", fetchServerSetup);
     el.saveSupabaseButton.addEventListener("click", saveSupabaseSettings);
     el.syncLocalButton.addEventListener("click", syncLocalToRemote);
   }
@@ -1224,27 +1222,6 @@
     return applyConfigObject(JSON.parse(json));
   }
 
-  // サーバーに置かれた設定ファイルから接続情報を取得して同期（コピペ不要）
-  async function fetchServerSetup() {
-    setCloudStatus("サーバーから設定を取得中…");
-    try {
-      const res = await fetch("/nb-setup.json?ts=" + Date.now(), { cache: "no-store" });
-      if (!res.ok) throw new Error("設定ファイルが見つかりません(" + res.status + ")");
-      const cfg = await res.json();
-      if (!applyConfigObject(cfg)) throw new Error("設定ファイルの中身が不正です");
-      showToast("設定を取得しました。同期します…");
-      if (initSupabaseClient()) {
-        await refreshSession();
-      } else {
-        setCloudStatus("接続できません: 取得した設定をご確認ください");
-      }
-    } catch (e) {
-      const detail = (e && e.message) || String(e);
-      setCloudStatus("サーバー設定の取得失敗: " + detail);
-      showToast("サーバー設定の取得失敗: " + detail, 6000);
-    }
-  }
-
   // 文字列（リンク全体 / "setup=xxx" / 生のbase64）からsetupコードを取り出す
   function extractSetupCode(text) {
     const s = String(text || "").trim();
@@ -1275,8 +1252,7 @@
   function applySetupFromField() {
     const code = extractSetupCode(el.setupLink ? el.setupLink.value : "");
     if (!code) {
-      // 欄が空ならサーバー設定を取得（コピペ不要の復旧用）
-      fetchServerSetup();
+      showToast("設定リンクを貼り付けてください");
       return;
     }
     try {
