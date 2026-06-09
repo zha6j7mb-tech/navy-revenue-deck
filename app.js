@@ -967,10 +967,11 @@
     if (!supabaseClient) return;
     try {
       // ログイン不要：anon key で接続できれば即同期
-      setCloudStatus("Supabase接続済み（クラウド同期ON）");
+      setCloudStatus("Supabase接続済み・取得中…");
       await pullRemote();
-    } catch {
-      setCloudStatus("接続に失敗しました。URL・キーを確認してください");
+    } catch (e) {
+      const detail = (e && (e.message || e.code)) || String(e);
+      setCloudStatus("接続失敗: " + detail);
     }
   }
 
@@ -992,9 +993,13 @@
         projects = Array.from(map.values());
         saveProjectsLocal();
         renderAll();
+        setCloudStatus(`同期OK：${data.length}件取得（クラウド同期ON）`);
       }
     } catch (e) {
-      showToast("クラウド取得に失敗しました");
+      // 診断用：本当のエラー内容を画面に出す（toastは消えるのでstatusにも残す）
+      const detail = (e && (e.message || e.error_description || e.hint || e.code)) || String(e);
+      setCloudStatus("取得失敗: " + detail);
+      showToast("取得失敗: " + detail, 6000);
     }
   }
 
