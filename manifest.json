@@ -1,0 +1,29 @@
+{
+  "name": "NAVY_BLUE Revenue Deck",
+  "short_name": "Revenue Deck",
+  "description": "副業映像制作の案件・収益・入金を管理するダッシュボード",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

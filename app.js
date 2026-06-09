@@ -1167,6 +1167,18 @@
   /* ---------------------------------------------------------------------
    * 起動
    * ------------------------------------------------------------------- */
+  // PWA: Service Worker 登録
+  function registerSW() {
+    if (!("serviceWorker" in navigator)) return;
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .catch(() => {
+          /* オフライン時やローカルファイル開きの場合は無視 */
+        });
+    });
+  }
+
   function init() {
     populateSelects();
     loadLocal();
@@ -1174,6 +1186,7 @@
     bindEvents();
     restoreCloudUI();
     renderAll();
+    registerSW();
   }
 
   document.addEventListener("DOMContentLoaded", init);
